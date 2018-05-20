@@ -53,4 +53,3 @@ for row in dictReader:
             message.addContent(row[key])
         # Add new message to messages array
         messages.append(message)
-              print(name)
