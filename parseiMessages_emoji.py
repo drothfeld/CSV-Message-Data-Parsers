@@ -223,3 +223,30 @@ html_string += """</body></html>"""
 fileHTML = open("index.html","w")
 fileHTML.write(html_string)
 fileHTML.close()
+
+# Creating main.css for emoji visualization
+emoji_size = 2.0
+css_string = """.emoji-heart-eyes{font-size:""" + str(emojis.heart_eyes * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-grin{font-size:""" + str(emojis.grin * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-amazed{font-size:""" + str(emojis.amazed * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-sobbing{font-size:""" + str(emojis.sobbing * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-embarrassed{font-size:""" + str(emojis.embarrassed * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-smile{font-size:""" + str(emojis.smile * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-pissed{font-size:""" + str(emojis.pissed * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-blow-heart-kiss{font-size:""" + str(emojis.blow_heart_kiss * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-scream{font-size:""" + str(emojis.scream * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-worried{font-size:""" + str(emojis.worried * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-laughing{font-size:""" + str(emojis.laughing * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-sleeping{font-size:""" + str(emojis.sleeping * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-roll-eyes{font-size:""" + str(emojis.roll_eyes * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-lick-lips{font-size:""" + str(emojis.lick_lips * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-halo{font-size:""" + str(emojis.halo * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-upsidedown{font-size:""" + str(emojis.upsidedown * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-shocked{font-size:""" + str(emojis.shocked * emoji_size) + """%;float:left;}"""
+css_string += """.emoji-drool{font-size:""" + str(emojis.drool * emoji_size) + """%;float:left;}"""
+fileCSS = open("main.css","w")
+fileCSS.write(css_string)
+fileCSS.close()
+
+# Open web page visualization
+os.system('open ./index.html')
