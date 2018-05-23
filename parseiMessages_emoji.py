@@ -78,6 +78,7 @@ if (os.path.isfile('./iMessages.csv') != True):
 
 # Read in iMessages.csv by the predefined
 # column labels
+text_messages_read = 0
 emojis = emojiCounter()
 dictReader = csv.DictReader(open('iMessages.csv', 'rb'),
 fieldnames = ['ROWID', 'text', 'service', 'account', 'date'], delimiter = ',', quotechar = '"')
@@ -85,6 +86,7 @@ fieldnames = ['ROWID', 'text', 'service', 'account', 'date'], delimiter = ',', q
 # Counting each occurance of
 # emoji faces in unicode
 for row in dictReader:
+    text_messages_read += 1
     for key in row:
         if (key == 'text'):
             singleTextMessage = row[key].decode('utf-8')
@@ -147,6 +149,7 @@ for row in dictReader:
 
 # Creating index.html for emoji visualization
 html_string = """<html><head><link rel="stylesheet" type="text/css" href="main.css"></head><body>"""
+html_string += """<div class = "menu-wrapper"><div class = "menu-title">Emoji Frequency Visualization</div><div class = "data-text">Text Messages Analyzed: """ + str(text_messages_read) + """</div></div><div class = "emoji-wrapper"> """
 if emojis.heart_eyes > 0:
     html_string += """<div class = "emoji-heart-eyes">"""
     html_string += emoji_encoded_heart_eyes
@@ -222,14 +225,19 @@ if emojis.drool > 0:
     html_string += """<div class = "emoji-drool">"""
     html_string += emoji_encoded_drool
     html_string += """</div>"""
-html_string += """</body></html>"""
+html_string += """</div></body></html>"""
 fileHTML = open("index.html","w")
 fileHTML.write(html_string)
 fileHTML.close()
 
 # Creating main.css for emoji visualization
 emoji_size = 2.2
-css_string = """.emoji-heart-eyes{font-size:""" + str(emojis.heart_eyes * emoji_size) + """%;float:left;}"""
+css_string =  """body{width:100%;margin:0px;}"""
+css_string += """.emoji-wrapper{padding-left:25px;padding-right: 25px;}"""
+css_string += """.menu-wrapper{width:100%;height:100px;background-color:rgb(255,207,0);margin-bottom:25px;}"""
+css_string += """.data-text{font-size:15px;position:relative;padding-top:10px;padding-left:40px;color:white;font-family:sans-serif;}"""
+css_string += """.menu-title{font-size:30px;position:relative;padding-top:20px;padding-left:20px;color:white;font-family:sans-serif;font-weight:bold;}"""
+css_string += """.emoji-heart-eyes{font-size:""" + str(emojis.heart_eyes * emoji_size) + """%;float:left;}"""
 css_string += """.emoji-grin{font-size:""" + str(emojis.grin * emoji_size) + """%;float:left;}"""
 css_string += """.emoji-amazed{font-size:""" + str(emojis.amazed * emoji_size) + """%;float:left;}"""
 css_string += """.emoji-sobbing{font-size:""" + str(emojis.sobbing * emoji_size) + """%;float:left;}"""
