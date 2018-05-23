@@ -5,7 +5,7 @@
 import csv
 import logging
 import os
-import re
+import json
 
 # emoji unicode text that
 # is being searched/counted
@@ -27,6 +27,26 @@ emoji_halo = "\U0001f607"
 emoji_upsidedown = "\U0001f643"
 emoji_shocked = "\U0001f633"
 emoji_drool = "\U0001f924"
+
+# Emojis encoded in utf-8
+emoji_encoded_heart_eyes = u'\U0001f60d'.encode('utf-8')
+emoji_encoded_grin = u'\U0001f601'.encode('utf-8')
+emoji_encoded_amazed = u'\U0001f62e'.encode('utf-8')
+emoji_encoded_sobbing = u'\U0001f62d'.encode('utf-8')
+emoji_encoded_embarrassed = u'\U0001f605'.encode('utf-8')
+emoji_encoded_smile = u'\U0001f60a'.encode('utf-8')
+emoji_encoded_pissed = u'\U0001f611'.encode('utf-8')
+emoji_encoded_blow_heart_kiss = u'\U0001f618'.encode('utf-8')
+emoji_encoded_scream = u'\U0001f631'.encode('utf-8')
+emoji_encoded_worried = u'\U0001f628'.encode('utf-8')
+emoji_encoded_laughing = u'\U0001f602'.encode('utf-8')
+emoji_encoded_sleeping = u'\U0001f634'.encode('utf-8')
+emoji_encoded_roll_eyes = u'\U0001f644'.encode('utf-8')
+emoji_encoded_lick_lips = u'\U0001f60b'.encode('utf-8')
+emoji_encoded_halo = u'\U0001f607'.encode('utf-8')
+emoji_encoded_upsidedown = u'\U0001f643'.encode('utf-8')
+emoji_encoded_shocked = u'\U0001f633'.encode('utf-8')
+emoji_encoded_drool = u'\U0001f924'.encode('utf-8')
 
 # emojiCounter object defining
 # how we will count emojis
@@ -70,57 +90,136 @@ for row in dictReader:
             singleTextMessage = row[key].decode('utf-8')
             singleTextMessage = singleTextMessage.encode('unicode_escape')
             for word in singleTextMessage.split():
-                # Check for 😍 emoji
+                # Check for heart_eyes emoji
                 if (word == emoji_heart_eyes):
                     emojis.heart_eyes += 1
-                # Check for 😁 emoji
+                # Check for grin emoji
                 elif (word == emoji_grin):
                     emojis.grin += 1
-                # Check for 😮 emoji
+                # Check for amazed emoji
                 elif (word == emoji_amazed):
                     emojis.amazed += 1
-                # Check for 😭 emoji
+                # Check for sobbing emoji
                 elif (word == emoji_sobbing):
                     emojis.sobbing += 1
-                # Check for 😅 emoji
+                # Check for embarrassed emoji
                 elif (word == emoji_embarrassed):
                     emojis.embarrassed += 1
-                # Check for 😊 emoji
+                # Check for smile emoji
                 elif (word == emoji_smile):
                     emojis.smile += 1
-                # Check for 😑 emoji
+                # Check for pissed emoji
                 elif (word == emoji_pissed):
                     emojis.pissed += 1
-                # Check for 😘 emoji
+                # Check for blow_heart_kiss emoji
                 elif (word == emoji_blow_heart_kiss):
                     emojis.blow_heart_kiss += 1
-                # Check for 😱 emoji
+                # Check for scream emoji
                 elif (word == emoji_scream):
                     emojis.scream += 1
-                # Check for 😨 emoji
+                # Check for worried emoji
                 elif (word == emoji_worried):
                     emojis.worried += 1
-                # Check for 😂 emoji
+                # Check for laughing emoji
                 elif (word == emoji_laughing):
                     emojis.laughing += 1
-                # Check for 😴 emoji
+                # Check for sleeping emoji
                 elif (word == emoji_sleeping):
                     emojis.sleeping += 1
-                # Check for 🙄 emoji
+                # Check for roll_eyes emoji
                 elif (word == emoji_roll_eyes):
                     emojis.roll_eyes += 1
-                # Check for 😋 emoji
+                # Check for lick_lips emoji
                 elif (word == emoji_lick_lips):
                     emojis.lick_lips += 1
-                # Check for 😇 emoji
+                # Check for halo emoji
                 elif (word == emoji_halo):
                     emojis.halo += 1
-                # Check for 🙃 emoji
+                # Check for upsidedown emoji
                 elif (word == emoji_upsidedown):
                     emojis.upsidedown += 1
-                # Check for 😳 emoji
+                # Check for shocked emoji
                 elif (word == emoji_shocked):
                     emojis.shocked += 1
-                # Check for 🤤 emoji
+                # Check for drool emoji
                 elif (word == emoji_drool):
                     emojis.drool += 1
+
+# Creating index.html for emoji visualization
+html_string = """<html><head><link rel="stylesheet" type="text/css" href="main.css"></head><body>"""
+if emojis.heart_eyes > 0:
+    html_string += """<div class = "emoji-heart-eyes">"""
+    html_string += emoji_encoded_heart_eyes
+    html_string += """</div>"""
+if emojis.grin > 0:
+    html_string += """<div class = "emoji-grin">"""
+    html_string += emoji_encoded_grin
+    html_string += """</div>"""
+if emojis.amazed > 0:
+    html_string += """<div class = "emoji-amazed">"""
+    html_string += emoji_encoded_amazed
+    html_string += """</div>"""
+if emojis.sobbing > 0:
+    html_string += """<div class = "emoji-sobbing">"""
+    html_string += emoji_encoded_sobbing
+    html_string += """</div>"""
+if emojis.embarrassed > 0:
+    html_string += """<div class = "emoji-embarrassed">"""
+    html_string += emoji_encoded_embarrassed
+    html_string += """</div>"""
+if emojis.smile > 0:
+    html_string += """<div class = "emoji-smile">"""
+    html_string += emoji_encoded_smile
+    html_string += """</div>"""
+if emojis.pissed > 0:
+    html_string += """<div class = "emoji-pissed">"""
+    html_string += emoji_encoded_pissed
+    html_string += """</div>"""
+if emojis.blow_heart_kiss > 0:
+    html_string += """<div class = "emoji-blow-heart-kiss">"""
+    html_string += emoji_encoded_blow_heart_kiss
+    html_string += """</div>"""
+if emojis.scream > 0:
+    html_string += """<div class = "emoji-scream">"""
+    html_string += emoji_encoded_scream
+    html_string += """</div>"""
+if emojis.worried > 0:
+    html_string += """<div class = "emoji-worried">"""
+    html_string += emoji_encoded_worried
+    html_string += """</div>"""
+if emojis.laughing > 0:
+    html_string += """<div class = "emoji-laughing">"""
+    html_string += emoji_encoded_laughing
+    html_string += """</div>"""
+if emojis.sleeping > 0:
+    html_string += """<div class = "emoji-sleeping">"""
+    html_string += emoji_encoded_sleeping
+    html_string += """</div>"""
+if emojis.roll_eyes > 0:
+    html_string += """<div class = "emoji-roll-eyes">"""
+    html_string += emoji_encoded_roll_eyes
+    html_string += """</div>"""
+if emojis.lick_lips > 0:
+    html_string += """<div class = "emoji-lick-lips">"""
+    html_string += emoji_encoded_lick_lips
+    html_string += """</div>"""
+if emojis.halo > 0:
+    html_string += """<div class = "emoji-halo">"""
+    html_string += emoji_encoded_halo
+    html_string += """</div>"""
+if emojis.upsidedown > 0:
+    html_string += """<div class = "emoji-upsidedown">"""
+    html_string += emoji_encoded_upsidedown
+    html_string += """</div>"""
+if emojis.shocked > 0:
+    html_string += """<div class = "emoji-shocked">"""
+    html_string += emoji_encoded_shocked
+    html_string += """</div>"""
+if emojis.drool > 0:
+    html_string += """<div class = "emoji-drool">"""
+    html_string += emoji_encoded_drool
+    html_string += """</div>"""
+html_string += """</body></html>"""
+fileHTML = open("index.html","w")
+fileHTML.write(html_string)
+fileHTML.close()
