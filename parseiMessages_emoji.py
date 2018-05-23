@@ -163,10 +163,13 @@ if emojis.sobbing > 0:
     html_string += """<div class = "emoji-sobbing">"""
     html_string += emoji_encoded_sobbing
     html_string += """</div>"""
-if emojis.embarrassed > 0:
-    html_string += """<div class = "emoji-embarrassed">"""
-    html_string += emoji_encoded_embarrassed
-    html_string += """</div>"""
+# Emoji font sizes over a certain amount will not render
+# in Google Chrome v66, this is a known bug
+# This should be resolved in v67 (in Beta)
+# if emojis.embarrassed > 0:
+#     html_string += """<div class = "emoji-embarrassed">"""
+#     html_string += emoji_encoded_embarrassed
+#     html_string += """</div>"""
 if emojis.smile > 0:
     html_string += """<div class = "emoji-smile">"""
     html_string += emoji_encoded_smile
@@ -225,7 +228,7 @@ fileHTML.write(html_string)
 fileHTML.close()
 
 # Creating main.css for emoji visualization
-emoji_size = 2.0
+emoji_size = 2.2
 css_string = """.emoji-heart-eyes{font-size:""" + str(emojis.heart_eyes * emoji_size) + """%;float:left;}"""
 css_string += """.emoji-grin{font-size:""" + str(emojis.grin * emoji_size) + """%;float:left;}"""
 css_string += """.emoji-amazed{font-size:""" + str(emojis.amazed * emoji_size) + """%;float:left;}"""
