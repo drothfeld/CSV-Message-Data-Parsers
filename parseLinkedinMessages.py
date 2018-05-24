@@ -1,9 +1,6 @@
 # Parses Inbox.csv Linkedin
 # message data dump to create an
 # output file in the following format:
-#
-# Message: text text text text
-# Reponse: text text text text
 import csv
 import logging
 import os
@@ -56,18 +53,29 @@ for row in dictReader:
 
 # Create output file composed of
 # messages and responses
+# Message: text text text text
+# Reponse: text text text text
 messageResponseString = ""
+messageResponseDictionary = ""
 senderToggle = True
 for message in messages:
     if (message.messageContent != ""):
         if (message.messageTo == personName and message.messageFrom != "" and senderToggle == True):
             messageResponseString += "Message: " + message.messageContent + "\n"
+            messageResponseDictionary += "(" + message.messageContent + ","
             senderToggle = False
         elif (message.messageFrom == personName and message.messageTo != "" and senderToggle == False):
             messageResponseString += "Response: " + message.messageContent + "\n"
+            messageResponseDictionary += message.messageContent + ")"
             senderToggle = True
 
 # Generating conversationData.txt
 conversationDataFile = open("conversationData.txt","w")
 conversationDataFile.write(messageResponseString)
 conversationDataFile.close()
+
+# Create output file of message pairs
+# (FRIENDS_MESSAGE, YOUR_RESPONSE)
+conversationDictionaryFile = open("conversationDictionary.npy","w")
+conversationDictionaryFile.write(messageResponseDictionary)
+conversationDictionaryFile.close()
