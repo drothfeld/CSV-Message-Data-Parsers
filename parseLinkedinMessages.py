@@ -43,13 +43,31 @@ fieldnames = ['From', 'To', 'Date', 'Subject', 'Content', 'Direction', 'Folder']
 
 # Adding each Inbox.csv message to messages[]
 for row in dictReader:
+    message = Message()
     for key in row:
-        message = Message()
         if (key == 'From'):
             message.addFrom(row[key])
         elif (key == 'To'):
             message.addTo(row[key])
         elif (key == 'Content'):
             message.addContent(row[key])
-        # Add new message to messages array
-        messages.append(message)
+    # Add new message to messages array
+    messages.append(message)
+
+# Create output file composed of
+# messages and responses
+messageResponseString = ""
+senderToggle = True
+for message in messages:
+    if (message.messageContent != ""):
+        if (message.messageTo == personName and message.messageFrom != "" and senderToggle == True):
+            messageResponseString += "Message: " + message.messageContent + "\n"
+            senderToggle = False
+        elif (message.messageFrom == personName and message.messageTo != "" and senderToggle == False):
+            messageResponseString += "Response: " + message.messageContent + "\n"
+            senderToggle = True
+
+# Generating conversationData.txt
+conversationDataFile = open("conversationData.txt","w")
+conversationDataFile.write(messageResponseString)
+conversationDataFile.close()
