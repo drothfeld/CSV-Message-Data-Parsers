@@ -7,6 +7,9 @@ import logging
 import os
 import json
 
+# Default values
+logging.getLogger().setLevel(logging.INFO)
+
 # emoji unicode text that
 # is being searched/counted
 emoji_heart_eyes = "\U0001f60d"
@@ -72,21 +75,34 @@ class emojiCounter():
         self.drool = 0
 
 # Check if iMessages.csv file exists
+print('-------------------------------------------------------')
+logging.info('Executing parseiMessages_emoji.py')
+logging.info('Attempting to open iMessages.csv')
 if (os.path.isfile('./iMessages.csv') != True):
     logging.error('Cannot find valid file named: iMessages.csv')
     quit()
+else:
+    logging.info('Successfully opened iMessages.csv')
 
 # Read in iMessages.csv by the predefined
 # column labels
-text_messages_read = 0
 emojis = emojiCounter()
+text_messages_read = 0
+emojis_found = 0
+emojis_in_single_text = 0
+most_emojis_found_in_single_text = 0
+logging.info('Initializing counters: ' + str(text_messages_read) + ' | ' + str(emojis_found))
 dictReader = csv.DictReader(open('iMessages.csv', 'rb'),
 fieldnames = ['ROWID', 'text', 'service', 'account', 'date'], delimiter = ',', quotechar = '"')
 
 # Counting each occurance of
 # emoji faces in unicode
+logging.info('Begin text message analysis')
 for row in dictReader:
     text_messages_read += 1
+    if (emojis_in_single_text > most_emojis_found_in_single_text):
+        most_emojis_found_in_single_text = emojis_in_single_text
+    emojis_in_single_text = 0
     for key in row:
         if (key == 'text'):
             singleTextMessage = row[key].decode('utf-8')
@@ -95,59 +111,102 @@ for row in dictReader:
                 # Check for heart_eyes emoji
                 if (word == emoji_heart_eyes):
                     emojis.heart_eyes += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for grin emoji
                 elif (word == emoji_grin):
                     emojis.grin += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for amazed emoji
                 elif (word == emoji_amazed):
                     emojis.amazed += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for sobbing emoji
                 elif (word == emoji_sobbing):
                     emojis.sobbing += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for embarrassed emoji
                 elif (word == emoji_embarrassed):
                     emojis.embarrassed += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for smile emoji
                 elif (word == emoji_smile):
                     emojis.smile += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for pissed emoji
                 elif (word == emoji_pissed):
                     emojis.pissed += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for blow_heart_kiss emoji
                 elif (word == emoji_blow_heart_kiss):
                     emojis.blow_heart_kiss += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for scream emoji
                 elif (word == emoji_scream):
                     emojis.scream += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for worried emoji
                 elif (word == emoji_worried):
                     emojis.worried += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for laughing emoji
                 elif (word == emoji_laughing):
                     emojis.laughing += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for sleeping emoji
                 elif (word == emoji_sleeping):
                     emojis.sleeping += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for roll_eyes emoji
                 elif (word == emoji_roll_eyes):
                     emojis.roll_eyes += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for lick_lips emoji
                 elif (word == emoji_lick_lips):
                     emojis.lick_lips += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for halo emoji
                 elif (word == emoji_halo):
                     emojis.halo += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for upsidedown emoji
                 elif (word == emoji_upsidedown):
                     emojis.upsidedown += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for shocked emoji
                 elif (word == emoji_shocked):
                     emojis.shocked += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
                 # Check for drool emoji
                 elif (word == emoji_drool):
                     emojis.drool += 1
+                    emojis_found += 1
+                    emojis_in_single_text += 1
+    # Print log messages for single text message line
+    logging.info('Text #' + str(text_messages_read))
+    logging.info('Emojis in this text: ' + str(emojis_in_single_text))
+    logging.info('Total emojis found: ' + str(emojis_found))
+    logging.info('-------------------------')
+logging.info('Text message analysis complete')
 
 # Creating index.html for emoji visualization
+logging.info('Generating index.html file')
 html_string = """<html><head><link rel="stylesheet" type="text/css" href="main.css"></head><body>"""
 html_string += """<div class = "menu-wrapper"><div class = "menu-title">Emoji Frequency Visualization</div><div class = "data-text">Text Messages Analyzed: """ + str(text_messages_read) + """</div></div><div class = "emoji-wrapper"> """
 if emojis.heart_eyes > 0:
@@ -229,8 +288,10 @@ html_string += """</div></body></html>"""
 fileHTML = open("index.html","w")
 fileHTML.write(html_string)
 fileHTML.close()
+logging.info('Finished writing to index.html')
 
 # Creating main.css for emoji visualization
+logging.info('Generating main.css file')
 emoji_size = 2.2
 css_string =  """body{width:100%;margin:0px;}"""
 css_string += """.emoji-wrapper{padding-left:25px;padding-right: 25px;}"""
@@ -258,6 +319,35 @@ css_string += """.emoji-drool{font-size:""" + str(emojis.drool * emoji_size) + "
 fileCSS = open("main.css","w")
 fileCSS.write(css_string)
 fileCSS.close()
+logging.info('Finished writing to main.css')
+logging.info('-------------------------')
+
+# Print final log messages
+logging.info('Total text messages analyzed: ' + str(text_messages_read))
+logging.info('Total emojis found: ' + str(emojis_found))
+logging.info('Most emojis found in a single text: ' + str(most_emojis_found_in_single_text))
+logging.info('Heart-eyes emojis found: ' + str(emojis.heart_eyes))
+logging.info('Grin emojis found: ' + str(emojis.grin))
+logging.info('Amazed emojis found: ' + str(emojis.amazed))
+logging.info('Sobbing emojis found: ' + str(emojis.sobbing))
+logging.info('Embarrassed emojis found: ' + str(emojis.embarrassed))
+logging.info('Smile emojis found: ' + str(emojis.smile))
+logging.info('Pissed emojis found: ' + str(emojis.pissed))
+logging.info('Blow-heart-kiss emojis found: ' + str(emojis.blow_heart_kiss))
+logging.info('Scream emojis found: ' + str(emojis.scream))
+logging.info('Worried emojis found: ' + str(emojis.worried))
+logging.info('Laughing emojis found: ' + str(emojis.laughing))
+logging.info('Sleeping emojis found: ' + str(emojis.sleeping))
+logging.info('Roll-eyes emojis found: ' + str(emojis.roll_eyes))
+logging.info('Lick-lips emojis found: ' + str(emojis.lick_lips))
+logging.info('Halo emojis found: ' + str(emojis.halo))
+logging.info('Upsidedown emojis found: ' + str(emojis.upsidedown))
+logging.info('Shocked emojis found: ' + str(emojis.shocked))
+logging.info('drool emojis found: ' + str(emojis.drool))
+logging.info('-------------------------')
+logging.info('Launching index.html in browser')
+logging.info('Finished executing parseiMessages_emoji.py')
+print('-------------------------------------------------------')
 
 # Open web page visualization
 os.system('open ./index.html')
