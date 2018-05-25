@@ -5,6 +5,7 @@ import csv
 import logging
 import os
 import json
+import numpy as np
 
 # Default values
 logging.getLogger().setLevel(logging.INFO)
