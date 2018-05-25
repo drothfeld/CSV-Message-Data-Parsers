@@ -4,6 +4,7 @@
 import csv
 import logging
 import os
+import numpy as np
 
 # Message object defining
 # how we will store table data
@@ -32,6 +33,7 @@ if (os.path.isfile('./Inbox.csv') != True):
 # logged messages
 personName = raw_input('Enter your full Linkedin account name: ')
 messages = []
+combinedDictionary = {}
 
 # Read in Inbox.csv by the predefined
 # column labels
@@ -57,16 +59,20 @@ for row in dictReader:
 # Reponse: text text text text
 messageResponseString = ""
 messageResponseDictionary = ""
+currentMessageString = ""
+responseDictionary = dict()
 senderToggle = True
 for message in messages:
     if (message.messageContent != ""):
         if (message.messageTo == personName and message.messageFrom != "" and senderToggle == True):
             messageResponseString += "Message: " + message.messageContent + "\n"
             messageResponseDictionary += "(" + message.messageContent + ","
+            currentMessageString = message.messageContent
             senderToggle = False
         elif (message.messageFrom == personName and message.messageTo != "" and senderToggle == False):
             messageResponseString += "Response: " + message.messageContent + "\n"
-            messageResponseDictionary += message.messageContent + ")"
+            messageResponseDictionary += message.messageContent + ")\n"
+            responseDictionary[message.messageContent] = currentMessageString
             senderToggle = True
 
 # Generating conversationData.txt
@@ -76,6 +82,8 @@ conversationDataFile.close()
 
 # Create output file of message pairs
 # (FRIENDS_MESSAGE, YOUR_RESPONSE)
-conversationDictionaryFile = open("conversationDictionary.npy","w")
-conversationDictionaryFile.write(messageResponseDictionary)
-conversationDictionaryFile.close()
+combinedDictionary.update(responseDictionary)
+np.save('conversationDictionary.npy', combinedDictionary)
+# conversationDictionaryFile = open("conversationDictionary.npy","w")
+# conversationDictionaryFile.write(messageResponseDictionary)
+# conversationDictionaryFile.close()

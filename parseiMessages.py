@@ -8,6 +8,7 @@ import json
 
 # Default values
 logging.getLogger().setLevel(logging.INFO)
+combinedDictionary = {}
 
 # Check if iMessages.csv file exists
 if (os.path.isfile('./iMessages.csv') != True):
@@ -34,15 +35,19 @@ for row in dictReader:
 # Reponse: text text text text
 messageResponseDictionary = ""
 messageResponseString = ""
+currentMessageString = ""
+responseDictionary = dict()
 senderToggle = True
 for message in messages:
     if (senderToggle == True):
         messageResponseString += "Message: " + message + "\n"
         messageResponseDictionary += "(" + message + ","
+        currentMessageString = message
         senderToggle = False
     else:
         messageResponseString += "Response: " + message + "\n"
-        messageResponseDictionary += message + ")"
+        messageResponseDictionary += message + ")\n"
+        responseDictionary[message] = currentMessageString
         senderToggle = True
 
 # Generating conversationData.txt
@@ -52,6 +57,8 @@ conversationDataFile.close()
 
 # Create output file of message pairs
 # (FRIENDS_MESSAGE, YOUR_RESPONSE)
-conversationDictionaryFile = open("conversationDictionary.npy","w")
-conversationDictionaryFile.write(messageResponseDictionary)
-conversationDictionaryFile.close()
+combinedDictionary.update(responseDictionary)
+np.save('conversationDictionary.npy', combinedDictionary)
+# conversationDictionaryFile = open("conversationDictionary.npy","w")
+# conversationDictionaryFile.write(messageResponseDictionary)
+# conversationDictionaryFile.close()
